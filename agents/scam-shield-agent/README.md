@@ -90,6 +90,7 @@ agents/scam-shield-agent/
 - A **Gemini API key** (optional, free tier is enough): https://aistudio.google.com/apikey. Without a key the app still works in rules-only mode for text, but screenshots need the AI.
 - Optional: Node.js 18+ (tested with 22.14) to run the browser-rules test.
 - Optional: Chrome on Android to try install, share-to-app and voice input.
+- **Windows tip:** `google-adk` installs some files with long paths. If `pip install` fails with `OSError: [Errno 2] No such file or directory ... Long Path support`, clone into a short folder (for example `C:\src`) or [enable long paths](https://pip.pypa.io/warnings/enable-long-paths).
 
 ---
 
