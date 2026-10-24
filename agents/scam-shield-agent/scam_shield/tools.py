@@ -382,7 +382,9 @@ def detect_payment_requests(text: str) -> dict:
             total += weight
     upi_ids = [m for m in _UPI_RE.findall(text)][:5]
     phones = [re.sub(r"[\s-]", "", m) for m in _PHONE_RE.findall(text)][:5]
-    if upi_ids:
+    # A UPI ID alone is normal (debit alerts name the payee); it only adds risk
+    # alongside an actual request for money, a PIN or an OTP.
+    if upi_ids and signals:
         total += 15
     return {
         "upi_ids": upi_ids,

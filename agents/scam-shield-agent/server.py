@@ -8,6 +8,7 @@ import os
 import time
 import uuid
 from collections import defaultdict, deque
+from datetime import date
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -80,7 +81,8 @@ async def run_agent(text: str, image: bytes | None, mime: str, language: str, si
     session_id = uuid.uuid4().hex
     await sessions.create_session(
         app_name=APP_NAME, user_id="web", session_id=session_id,
-        state={"language": LANGUAGES.get(language, "English"), "simple_mode": "on" if simple else "off"},
+        state={"language": LANGUAGES.get(language, "English"), "simple_mode": "on" if simple else "off",
+               "today": date.today().strftime("%d %B %Y")},
     )
     try:
         async for _ in runner.run_async(user_id="web", session_id=session_id,

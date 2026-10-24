@@ -97,10 +97,17 @@ PAYMENT REPORT:
 PATTERN REPORT:
 {pattern_report?}
 
+Today's date is {today?}. Judge every date in the message against it; a
+recent past date is normal and is never a red flag.
+
 Decide the final verdict using the reports AND the original message. Messages
 from real banks never ask for OTP, PIN, CVV or remote-access apps, and you never
 need to enter a PIN to RECEIVE money. Ordinary personal or official messages
-with no requests for money, links or secrets are "safe". Do not invent
+with no requests for money, links or secrets are "safe". Genuine bank
+transaction alerts (debited/credited, UPI reference number, the payee's UPI ID,
+"if not you, report it" with a helpline or "SMS BLOCK") only inform: if there is
+no link and no request for OTP, PIN, card details, payment or an app install,
+treat them as "safe" and advise checking the bank's official app. Do not invent
 evidence. When the message is clearly a scam, advice must include: do not click
 or reply, block the sender, and report at 1930 or cybercrime.gov.in.
 
