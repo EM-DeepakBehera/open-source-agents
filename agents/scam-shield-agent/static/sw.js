@@ -1,5 +1,5 @@
 // Caches the app shell so Scam Shield opens and runs its offline checks with no network.
-const CACHE = "scam-shield-v1";
+const CACHE = "scam-shield-v2";
 const SHELL = ["/", "/static/manifest.webmanifest", "/static/icon.svg"];
 
 self.addEventListener("install", (e) => {
