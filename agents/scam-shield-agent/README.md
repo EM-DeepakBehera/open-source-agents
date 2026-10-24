@@ -124,7 +124,8 @@ agents/scam-shield-agent/
 
 | Variable Name | Required | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `GOOGLE_API_KEY` | No (needed for AI and screenshots) | *None* | Gemini API key. `GEMINI_API_KEY` is also accepted. If unset, the server uses the rule engine only. |
+| `GOOGLE_API_KEYS` | No (needed for AI and screenshots) | *None* | Comma-separated Gemini API keys, any number. Tried in order with automatic failover (see below). If no key is set, the server uses the rule engine only. |
+| `GOOGLE_API_KEY` | No | *None* | Older setting, still supported: one key or a comma-separated list. `GEMINI_API_KEY` is also accepted. Its keys are added after the `GOOGLE_API_KEYS` list, skipping duplicates. |
 | `GOOGLE_GENAI_USE_VERTEXAI` | No | `FALSE` | Set to `TRUE` to use Vertex AI with Google Cloud credentials instead of an API key. |
 | `MODEL_NAME` | No | `gemini-3.5-flash-lite` | Gemini model used by all four agents. It must support tools, structured output and image input. (`gemini-2.5-flash-lite` now returns 404 for new users.) |
 | `HOST` | No | `0.0.0.0` | Address the server listens on. |
@@ -133,6 +134,17 @@ agents/scam-shield-agent/
 | `RATE_LIMIT_PER_MINUTE` | No | `20` | Checks allowed per client IP per minute (in-memory). |
 
 The real `.env` is git-ignored. Never commit it.
+
+### API key failover
+
+Set several keys in `GOOGLE_API_KEYS` and each check uses the key that last worked. If that key fails, the server tries the next one:
+
+- **Invalid, expired or no permission** (HTTP 400/401/403): the key is turned off until the server restarts.
+- **Over quota** (HTTP 429): the key is skipped for the wait time Gemini sends back (60 s if none is given).
+- **Server error or timeout**: the next key is tried and the key stays on.
+- **Any other error** (for example a bad request): no more keys are tried, because they would fail the same way.
+
+If every key fails, a text check still returns the rule-engine verdict with an `ai_error` field that gives the reason for each key, listed by number. A screenshot-only check returns HTTP 503 with the same message. `/api/health` shows `keys_total` and `keys_available`. Keys are never logged or returned; logs refer to them only as key #1, #2 and so on. Create each key in a **different Google Cloud project**: free-tier quota is per project, so keys from the same project run out together.
 
 ---
 
